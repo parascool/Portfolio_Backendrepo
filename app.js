@@ -32,9 +32,7 @@ app.use(
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/admin", AdminRouter);
 
-app.get("/getResume", (req, res) => {
-    res.download("Paras_Pardhi_mernstack_developer.pdf")
-})
+
 
 dbConnection();
 app.use(errorMiddleware);
