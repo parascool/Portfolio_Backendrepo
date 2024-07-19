@@ -6,13 +6,16 @@ import jwt from "jsonwebtoken";
 export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
   const { token } = req.cookies;
   if (!token) {
-    return next(new ErrorHandler("User Not Authorized", 401));
+    return next(new ErrorHandler("User is Not Authorized", 401));
   }
-  const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-
-  req.user = await User.findById(decoded.id);
-
-  next();
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    req.user = await User.findById(decoded.id);
+    console.log('Authenticated user:', req.user);
+    next();
+  } catch (error) {
+    return next(new ErrorHandler("User Not Authorized", 402));
+  }
 });
 
 
